@@ -10,7 +10,7 @@
 <script>
 const SUPABASE_URL = "https://ylykbujhrlbmeryikrsf.supabase.co";
 const SUPABASE_KEY = "sb_publishable_u7WU3iNzCLO_CpDe187ggA_WJmBAfqk";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* Firebase-like ID */
 function generateFirebaseId(){
@@ -39,7 +39,7 @@ function ref(path){
     async push(data){
       if(parts[0]==="chat"){
         const firebase_id = generateFirebaseId();
-        await supabaseClient.from("chat").insert({
+        await window.supabaseClient.from("chat").insert({
           firebase_id,
           text:data.text,
           user_name:data.user,
@@ -52,7 +52,7 @@ function ref(path){
       }
 
       if(path==="video/emotes"){
-        await supabaseClient.from("video_emotes").insert({
+        await window.supabaseClient.from("video_emotes").insert({
           emoji:data.e,
           user:data.user,
           ts:data.ts
@@ -65,7 +65,7 @@ function ref(path){
 
       /* Clear chat */
       if(path==="chat" && data===null){
-        await supabaseClient.from("chat").delete().neq("id",0);
+        await window.supabaseClient.from("chat").delete().neq("id",0);
         return;
       }
 
@@ -73,7 +73,7 @@ function ref(path){
       if(parts[0]==="chat" && parts.length===3){
         const firebase_id=parts[1];
         const field=parts[2];
-        await supabaseClient.from("chat")
+        await window.supabaseClient.from("chat")
           .update({[field]:data})
           .eq("firebase_id",firebase_id);
         return;
@@ -83,7 +83,7 @@ function ref(path){
       if(parts[0]==="chat" && parts.length===4 && parts[2]==="reactions"){
         const firebase_id=parts[1];
         const userKey=parts[3];
-        const {data:msg}=await supabaseClient.from("chat")
+        const {data:msg}=await window.supabaseClient.from("chat")
           .select("reactions")
           .eq("firebase_id",firebase_id)
           .single();
@@ -91,7 +91,7 @@ function ref(path){
         let reactions=msg?.reactions||{};
         reactions[userKey]=data;
 
-        await supabaseClient.from("chat")
+        await window.supabaseClient.from("chat")
           .update({reactions})
           .eq("firebase_id",firebase_id);
         return;
@@ -101,9 +101,9 @@ function ref(path){
       if(parts[0]==="typing"){
         const id=parts[1];
         if(data===null){
-          await supabaseClient.from("typing").delete().eq("id",id);
+          await window.supabaseClient.from("typing").delete().eq("id",id);
         }else{
-          await supabaseClient.from("typing").upsert({
+          await window.supabaseClient.from("typing").upsert({
             id,
             user_name:data.user,
             is_typing:data.typing,
@@ -115,7 +115,7 @@ function ref(path){
 
       /* Video state */
       if(path==="video/state"){
-        await supabaseClient.from("video_state").upsert({
+        await window.supabaseClient.from("video_state").upsert({
           id:1,
           action:data.action,
           time:data.time,
@@ -127,7 +127,7 @@ function ref(path){
 
       /* Video URL */
       if(path==="video/url"){
-        await supabaseClient.from("video_url").upsert({
+        await window.supabaseClient.from("video_url").upsert({
           id:1,
           url:data
         });
@@ -144,7 +144,7 @@ function ref(path){
     /* REMOVE */
     async remove(){
       if(parts[0]==="chat" && parts.length===2){
-        await supabaseClient.from("chat")
+        await window.supabaseClient.from("chat")
           .delete()
           .eq("firebase_id",parts[1]);
       }
@@ -155,7 +155,7 @@ function ref(path){
 
       /* Chat added */
       if(parts[0]==="chat" && event==="child_added"){
-        supabaseClient.channel("chat_insert")
+        window.supabaseClient.channel("chat_insert")
         .on("postgres_changes",{event:"INSERT",schema:"public",table:"chat"},
           payload=>{
             const d=payload.new;
@@ -173,7 +173,7 @@ function ref(path){
 
       /* Chat changed */
       if(parts[0]==="chat" && event==="child_changed"){
-        supabaseClient.channel("chat_update")
+        window.supabaseClient.channel("chat_update")
         .on("postgres_changes",{event:"UPDATE",schema:"public",table:"chat"},
           payload=>{
             const d=payload.new;
@@ -191,7 +191,7 @@ function ref(path){
 
       /* Chat removed */
       if(parts[0]==="chat" && event==="child_removed"){
-        supabaseClient.channel("chat_delete")
+        window.supabaseClient.channel("chat_delete")
         .on("postgres_changes",{event:"DELETE",schema:"public",table:"chat"},
           payload=>callback(makeSnapshot(null,payload.old.firebase_id)))
         .subscribe();
@@ -199,10 +199,10 @@ function ref(path){
 
       /* Typing */
       if(parts[0]==="typing" && event==="value"){
-        supabaseClient.channel("typing_channel")
+        window.supabaseClient.channel("typing_channel")
         .on("postgres_changes",{event:"*",schema:"public",table:"typing"},
           async ()=>{
-            const {data}=await supabaseClient.from("typing").select("*");
+            const {data}=await window.supabaseClient.from("typing").select("*");
             const map={};
             (data||[]).forEach(d=>map[d.id]={user:d.user_name,typing:d.is_typing});
             callback(makeSnapshot(map));
@@ -211,7 +211,7 @@ function ref(path){
 
       /* Video state */
       if(path==="video/state"){
-        supabaseClient.channel("video_sync")
+        window.supabaseClient.channel("video_sync")
         .on("postgres_changes",{event:"*",schema:"public",table:"video_state"},
           payload=>callback(makeSnapshot(payload.new)))
         .subscribe();
@@ -219,7 +219,7 @@ function ref(path){
 
       /* Video URL */
       if(path==="video/url"){
-        supabaseClient.channel("video_url_sync")
+        window.supabaseClient.channel("video_url_sync")
         .on("postgres_changes",{event:"*",schema:"public",table:"video_url"},
           payload=>callback(makeSnapshot(payload.new.url)))
         .subscribe();
@@ -227,7 +227,7 @@ function ref(path){
 
       /* Online count */
       if(parts[0]==="online" && event==="value"){
-        const channel=supabaseClient.channel("presence",{config:{presence:{key:Math.random().toString(36)}}});
+        const channel=window.supabaseClient.channel("presence",{config:{presence:{key:Math.random().toString(36)}}});
         channel.subscribe(async(status)=>{
           if(status==="SUBSCRIBED"){
             await channel.track({online:true});
@@ -1243,7 +1243,7 @@ function setVideoLink(){
 }
 /* LOAD EXISTING URL ON START */
 (async function(){
-  const { data } = await supabaseClient
+  const { data } = await window.supabaseClient
     .from("video_url")
     .select("*")
     .eq("id",1)
