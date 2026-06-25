@@ -385,6 +385,18 @@ align-items:center;
 flex-wrap:wrap;  
 }  
 
+/* ✅ اسم کاربر بالای پیام */
+.msg-username {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 215, 0, 0.9);
+  margin-bottom: 2px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+.other .msg-username {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .reply-box{  
 font-size:11px;  
 opacity:.8;  
@@ -568,7 +580,7 @@ cursor:pointer;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.15), inset 0 0 30px rgba(255, 215, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.4);
   transition: all 0.4s ease;
   animation: goldBorderPulse 3s ease-in-out infinite;
-  min-height: 50px;
+  min-height: 46px;
 }
 
 @keyframes goldBorderPulse {
@@ -584,7 +596,7 @@ cursor:pointer;
 
 .input-area input {
   flex: 1;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 50px;
   border: none;
   font-size: 14px;
@@ -594,7 +606,7 @@ cursor:pointer;
   font-weight: 400;
   letter-spacing: 0.3px;
   transition: all 0.3s ease;
-  height: 36px;
+  height: 32px;
 }
 
 .input-area input::placeholder {
@@ -616,8 +628,8 @@ cursor:pointer;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 55px;
-  height: 55px;
+  width: 50px;
+  height: 50px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -665,7 +677,6 @@ border-left:1px solid rgba(255,215,0,0.15);
 }  
 #settings.open{right:0}  
 
-/* ✅ دکمه‌های منو - ترکیب طلایی و قرمز */
 #settings button {
   width: 100%;
   margin-bottom: 12px;
@@ -694,7 +705,6 @@ border-left:1px solid rgba(255,215,0,0.15);
   100% { background-position: 0% 50%; box-shadow: 0 4px 20px rgba(200, 0, 0, 0.3), inset 0 1px 0 rgba(255,215,0,0.2); }
 }
 
-/* خط طلایی زیر دکمه */
 #settings button::after {
   content: "";
   position: absolute;
@@ -724,7 +734,6 @@ border-left:1px solid rgba(255,215,0,0.15);
   box-shadow: 0 2px 10px rgba(200, 0, 0, 0.3);
 }
 
-/* دکمه بستن - رنگ متفاوت */
 #settings button:last-child {
   background: linear-gradient(135deg, #1a1a1a, #333, #1a1a1a);
   background-size: 200% 200%;
@@ -758,7 +767,6 @@ border-left:1px solid rgba(255,215,0,0.15);
   margin: 18px 0;
 }
 
-/* ورودی لینک فیلم - هماهنگ با تم */
 #videoLinkInput {
   width: 100%;
   padding: 12px 16px;
@@ -782,7 +790,6 @@ border-left:1px solid rgba(255,215,0,0.15);
   color: rgba(255,255,255,0.3);
 }
 
-/* برای موبایل */
 @media (max-width: 480px) {
   #settings {
     width: 260px;
@@ -796,6 +803,7 @@ border-left:1px solid rgba(255,215,0,0.15);
   }
 }
 
+/* ✅ LOGIN NEW - دو ورودی */
 #login{  
 position:fixed;  
 inset:0;  
@@ -808,16 +816,17 @@ z-index:999;
 }  
 
 .login-box{  
-padding:26px;  
+padding:30px;  
 text-align:center;  
 border-radius:20px;  
 border:1px solid rgba(229,9,20,.35);  
 background:linear-gradient(180deg, rgba(20,0,0,.82), rgba(0,0,0,.78));  
 box-shadow:0 10px 30px rgba(0,0,0,.55), 0 0 18px rgba(229,9,20,.25);  
+width:320px;
 }  
-.login-box h3{margin-bottom:12px; letter-spacing:.2px}
+.login-box h3{margin-bottom:16px; letter-spacing:.2px; color:#fff; font-size:22px}
 .login-box input{  
-width:220px;
+width:100%;
 padding:12px;  
 border-radius:14px;  
 border:1px solid rgba(229,9,20,.35);  
@@ -825,14 +834,31 @@ background:rgba(0,0,0,.45);
 color:white;  
 outline:none;
 margin-bottom:12px;  
-}  
+font-size:15px;
+}
+.login-box input::placeholder{color:rgba(255,255,255,0.3)}
 .login-box button{
-padding:10px 18px;
+padding:12px 24px;
 border:none;
 border-radius:14px;
-background:#e50914;
+background:linear-gradient(135deg,#cc0000,#ff1a1a);
 color:white;
-box-shadow:0 8px 18px rgba(229,9,20,.25);
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+box-shadow:0 8px 25px rgba(229,9,20,.3);
+transition:all 0.3s ease;
+width:100%;
+}
+.login-box button:hover{
+transform:scale(1.02);
+box-shadow:0 8px 35px rgba(229,9,20,.4);
+}
+#loginError{
+color:#ff4444;
+font-size:14px;
+margin-top:8px;
+display:none;
 }
 
 #welcomeOverlay{  
@@ -854,13 +880,15 @@ border:1px solid rgba(229,9,20,.28);
 background:linear-gradient(180deg, rgba(20,0,0,.72), rgba(0,0,0,.72));  
 box-shadow:0 10px 30px rgba(0,0,0,.55), 0 0 18px rgba(229,9,20,.18);  
 }  
-.welcome-box h3{margin-bottom:14px}
+.welcome-box h3{margin-bottom:14px; color:#fff}
 .welcome-box button{  
 padding:10px 20px;  
 border:none;  
 border-radius:14px;  
 background:#e50914;  
 color:white;  
+font-size:16px;
+cursor:pointer;
 }  
 
 @media (orientation:landscape){  
@@ -928,16 +956,18 @@ body::before {
 <body>
   <div id="login">  
   <div class="login-box">  
-    <h3>رمز را وارد کنید</h3>  
-    <input id="pass" placeholder="رمز...">  
-    <button onclick="checkPass()">تایید</button>  
+    <h3>🔐 ورود به حساب</h3>  
+    <input id="loginUser" placeholder="نام کاربری...">  
+    <input id="loginPass" type="password" placeholder="رمز عبور...">  
+    <button onclick="checkLogin()">ورود</button>  
+    <div id="loginError">رمز یا نام کاربری اشتباه است</div>
   </div>  
 </div>  
 
 <div id="welcomeOverlay">  
   <div class="welcome-box">  
-    <h3>سلام عزیزم ❤️ خوش آمدی</h3>  
-    <button onclick="closeWelcome()">ورود</button>  
+    <h3>سلام <span id="welcomeName">عزیزم</span> ❤️ خوش آمدی</h3>  
+    <button onclick="closeWelcome()">ورود به پنل</button>  
   </div>  
 </div>  
 
@@ -1069,10 +1099,46 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);  
 var db=firebase.database();  
 
-var username="user"+Math.floor(Math.random()*1000);  
+var username="";
 var myId=Math.random().toString(36).substr(2,9);  
 var replyTo=null;  
 var editKey=null;  
+
+// ✅ کاربران مجاز
+const validUsers = {
+  "الهه": "CTF_11",
+  "حمیدرضا": "CTF_22"
+};
+
+/*****************************/
+/* ✅ LOGIN SYSTEM           */
+/*****************************/
+function checkLogin(){
+  var user = document.getElementById("loginUser").value.trim();
+  var pass = document.getElementById("loginPass").value.trim();
+  var errorEl = document.getElementById("loginError");
+  
+  if(validUsers[user] && validUsers[user] === pass){
+    username = user;
+    errorEl.style.display = "none";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("welcomeName").innerText = user;
+    document.getElementById("welcomeOverlay").style.display = "flex";
+  } else {
+    errorEl.style.display = "block";
+  }
+}
+
+function closeWelcome(){
+  document.getElementById("welcomeOverlay").style.display = "none";
+}
+
+// Enter key for login
+document.addEventListener("keydown", function(e) {
+  if(e.key === "Enter" && document.getElementById("login").style.display !== "none") {
+    checkLogin();
+  }
+});
 
 /*****************************/
 /* 🎨 THEME SYSTEM           */
@@ -1097,17 +1163,6 @@ db.ref("ui/theme").on("value",snap=>{
   if(t) applyTheme(t);
 });
 
-/*****************************/
-/* ✅ LOGIN / WELCOME        */
-/*****************************/
-function checkPass(){  
-  var input=document.getElementById("pass").value.trim();  
-  if(input==="bazsho20"){  
-    document.getElementById("login").style.display="none";  
-    document.getElementById("welcomeOverlay").style.display="flex";  
-  }  
-}  
-function closeWelcome(){welcomeOverlay.style.display="none"}  
 function toggleSettings(){settings.classList.toggle("open")}  
 function toggleDark(){document.body.classList.toggle("dark")}  
 
@@ -1372,7 +1427,7 @@ document.addEventListener("click",()=>{closeAllPickers();});
 /* ✅ SEND (device removed)  */
 /*****************************/
 function send(){  
-  if(!msg.value)return;  
+  if(!msg.value || !username) return;  
 
   if(editKey){  
     db.ref("chat/"+editKey+"/text").set(msg.value);  
@@ -1438,6 +1493,12 @@ db.ref("chat").on("child_added",snap=>{
   var div=document.createElement("div");  
   div.className="message "+(d.user===username?"me":"other");  
   div.id="m_"+key;  
+
+  // ✅ اسم کاربر
+  var nameDiv=document.createElement("div");
+  nameDiv.className="msg-username";
+  nameDiv.innerText=d.user;
+  div.appendChild(nameDiv);
 
   if(d.reply){  
     var rep=document.createElement("div");  
@@ -1551,7 +1612,7 @@ db.ref("chat").on("child_changed",snap=>{
   var d=snap.val();  
   var m=document.getElementById("m_"+snap.key);  
   if(m){  
-    var mainText=m.querySelector("div:nth-child("+(d.reply?2:1)+")");  
+    var mainText=m.querySelector("div:nth-child(2)");  
     if(mainText) mainText.innerText=d.text;  
 
     var meta=m.querySelector(".meta");  
