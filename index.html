@@ -154,37 +154,37 @@ border-radius:18px;
 }  
   
 header{  
-height:85px;  
+height:90px;  
 flex-shrink:0;  
 display:flex;  
-justify-content:space-between;  
+justify-content:flex-end; /* تغییر به راست چین */  
 align-items:center;  
 padding:0 16px;  
 position:relative;  
 }  
 
-/* ✅ لوگوی بسیار بزرگ و غول‌پیکر - کاملاً وسط */
+/* ✅ لوگوی بسیار بزرگ و غول‌پیکر - در سمت راست */
 .logo-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end; /* راست چین */
   flex: 1;
-  margin: 0 15px;
+  margin: 0 5px;
   position: relative;
 }
 
 .logo-wrapper img {
-  height: 260px;  /* اندازه بسیار بزرگ */
+  height: 280px;  /* اندازه بسیار بزرگتر */
   width: auto;
-  max-height: 300px;
+  max-height: 320px;
   filter: drop-shadow(0 0 50px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 100px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 150px rgba(255, 215, 0, 0.3));
   transition: filter 0.3s ease;
   display: block;
   image-rendering: auto;
   animation: logoGlow 3s ease-in-out infinite alternate;
-  margin-top: 45px;  /* پایین‌تر آوردن لوگو */
-  margin-right: -30px; /* کمی به راست متمایل شدن برای وسط شدن کامل */
-  transform: translateX(15px); /* جابجایی به راست برای وسط شدن */
+  margin-top: 50px;  /* پایین‌تر آوردن لوگو */
+  margin-right: -10px; /* کمی به راست */
+  transform: translateX(5px);
 }
 
 @keyframes logoGlow {
@@ -198,27 +198,31 @@ position:relative;
 
 /* در حالت موبایل لوگو بزرگ */
 @media (max-width: 480px) {
+  header {
+    height: 75px;
+  }
   .logo-wrapper img {
-    height: 180px;
-    max-height: 210px;
-    margin-top: 35px;
-    margin-right: -20px;
-    transform: translateX(10px);
+    height: 190px;
+    max-height: 220px;
+    margin-top: 40px;
+    margin-right: -5px;
   }
 }
 
 /* در حالت افقی */
 @media (orientation: landscape) and (max-height: 600px) {
+  header {
+    height: 70px;
+  }
   .logo-wrapper img {
     height: 150px;
     max-height: 170px;
-    margin-top: 25px;
-    margin-right: -15px;
-    transform: translateX(8px);
+    margin-top: 30px;
+    margin-right: -5px;
   }
 }
 
-/* ✅ قسمت تنظیمات و آنلاین در بالا - دقیقاً سر جاش */
+/* ✅ قسمت تنظیمات و آنلاین در بالا - کمی پایین‌تر */
 .header-right {
   display: flex;
   align-items: center;
@@ -226,14 +230,14 @@ position:relative;
   white-space: nowrap;
   position: relative;
   z-index: 5;
-  margin-top: -85px;  /* بالا بردن به جای قبلی */
+  margin-top: -70px;  /* پایین‌تر آمدن نسبت به قبل */
   margin-right: 5px;
 }
 
 /* برای موبایل */
 @media (max-width: 480px) {
   .header-right {
-    margin-top: -65px;
+    margin-top: -55px;
     margin-right: 3px;
   }
 }
@@ -241,7 +245,7 @@ position:relative;
 /* برای حالت افقی */
 @media (orientation: landscape) and (max-height: 600px) {
   .header-right {
-    margin-top: -55px;
+    margin-top: -45px;
     margin-right: 3px;
   }
 }
@@ -823,6 +827,7 @@ body::before {
 </div>  
 
 <header>  
+  <div style="flex:1;"></div> <!-- فضای خالی سمت چپ -->
   <div class="logo-wrapper">
     <img src="https://raw.githubusercontent.com/persiancom/watch-togethe/main/file_00000000e46071f49a450ee688ef7b27.png" alt="Logo" loading="eager" decoding="async" fetchpriority="high">
   </div>
