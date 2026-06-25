@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  
 <title>Watch Together</title>  
   
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>  
+<script src="https://www.gstatic.comfirebasejs/8.10.0/firebase-app.js"></script>  
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>  
   
 <style>  
@@ -359,76 +359,75 @@ flex:1;
 overflow-y:auto;  
 display:flex;  
 flex-direction:column;  
-gap:6px;  
+gap:4px;  
 }  
 
 .message{  
-padding:8px 10px;  
-border-radius:14px;  
-max-width:75%;  
-font-size:14px;  
+padding:5px 8px;  
+border-radius:12px;  
+max-width:70%;  
+font-size:13px;  
 display:flex;  
 flex-direction:column;  
-gap:4px;  
+gap:2px;  
 position:relative;  
 }  
-.me{align-self:flex-end;background:#0088ff;border-bottom-right-radius:4px}  
-.other{align-self:flex-start;background:#2a2a32;border-bottom-left-radius:4px}  
+.me{align-self:flex-end;background:#0088ff;border-bottom-right-radius:3px}  
+.other{align-self:flex-start;background:#2a2a32;border-bottom-left-radius:3px}  
 
 .meta{  
-font-size:10px;  
-opacity:.7;  
+font-size:9px;  
+opacity:.6;  
 display:flex;  
 justify-content:flex-end;  
-gap:4px;  
+gap:3px;  
 align-items:center;  
 flex-wrap:wrap;  
 }  
 
-/* ✅ اسم کاربر بالای پیام */
 .msg-username {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: rgba(255, 215, 0, 0.9);
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
 }
 .other .msg-username {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .reply-box{  
-font-size:11px;  
-opacity:.8;  
-border-left:3px solid #fff;  
-padding-left:6px;  
-margin-bottom:4px;  
+font-size:10px;  
+opacity:.7;  
+border-left:2px solid #fff;  
+padding-left:4px;  
+margin-bottom:2px;  
 }  
 
 .reactions{  
 display:flex;  
-gap:4px;  
-font-size:14px;  
-margin-top:4px;  
+gap:3px;  
+font-size:12px;  
+margin-top:2px;  
 }  
 
 .reaction-picker{  
 position:absolute;  
 bottom:100%;  
 background:#1c1c22;  
-padding:6px;  
-border-radius:10px;  
+padding:4px;  
+border-radius:8px;  
 display:flex;  
-gap:6px;  
-font-size:18px;  
+gap:4px;  
+font-size:16px;  
 align-items:center;  
 }  
 
 .react-btn{  
-font-size:11px;  
+font-size:10px;  
 opacity:.9;  
-padding:2px 5px;  
-border-radius:8px;  
+padding:1px 4px;  
+border-radius:6px;  
 border:1px solid rgba(255,255,255,.25);  
 background:rgba(0,0,0,.15);  
 cursor:pointer;  
@@ -437,10 +436,10 @@ user-select:none;
 .react-btn:active{transform:scale(.96)}  
 
 .edit-btn{  
-font-size:11px;  
+font-size:10px;  
 opacity:.9;  
-padding:2px 5px;  
-border-radius:8px;  
+padding:1px 4px;  
+border-radius:6px;  
 border:1px solid rgba(255,255,255,.25);  
 background:rgba(0,0,0,.15);  
 cursor:pointer;  
@@ -449,10 +448,10 @@ user-select:none;
 .edit-btn:active{transform:scale(.96)}  
 
 .del-btn{
-font-size:11px;
+font-size:10px;
 opacity:.9;
-padding:2px 5px;
-border-radius:8px;
+padding:1px 4px;
+border-radius:6px;
 border:1px solid rgba(255,255,255,.25);
 background:rgba(0,0,0,.15);
 cursor:pointer;
@@ -461,9 +460,9 @@ user-select:none;
 .del-btn:active{transform:scale(.96)}
 
 .picker-close{  
-font-size:12px;  
-padding:2px 6px;  
-border-radius:8px;  
+font-size:11px;  
+padding:1px 5px;  
+border-radius:6px;  
 border:1px solid rgba(255,255,255,.25);  
 background:rgba(255,255,255,.08);  
 cursor:pointer;  
@@ -472,24 +471,24 @@ user-select:none;
 #typingIndicator{  
 display:none;  
 flex-shrink:0;  
-margin-top:6px;  
-margin-bottom:4px;  
-padding:6px 10px;  
-border-radius:14px;  
+margin-top:4px;  
+margin-bottom:2px;  
+padding:4px 8px;  
+border-radius:12px;  
 background:rgba(0,0,0,.16);  
 backdrop-filter:blur(10px);  
-font-size:12px;  
+font-size:11px;  
 opacity:.9;  
 }  
 
 #replyPreview{  
 display:none;  
 flex-shrink:0;  
-margin-top:6px;  
-margin-bottom:4px;  
-padding:8px 10px;  
-border-radius:14px;  
-border-left:4px solid #fff;  
+margin-top:4px;  
+margin-bottom:2px;  
+padding:4px 8px;  
+border-radius:12px;  
+border-left:3px solid #fff;  
 background:rgba(0,0,0,.18);  
 backdrop-filter:blur(10px);  
 }  
@@ -497,22 +496,22 @@ backdrop-filter:blur(10px);
 display:flex;  
 justify-content:space-between;  
 align-items:center;  
-gap:10px;  
-margin-bottom:4px;  
-font-size:11px;  
+gap:8px;  
+margin-bottom:2px;  
+font-size:10px;  
 opacity:.85;  
 }  
 #replyPreview .rp-text{  
-font-size:12px;  
+font-size:11px;  
 opacity:.9;  
 white-space:nowrap;  
 overflow:hidden;  
 text-overflow:ellipsis;  
 }  
 #cancelReply{  
-font-size:12px;  
-padding:2px 8px;  
-border-radius:10px;  
+font-size:11px;  
+padding:1px 6px;  
+border-radius:8px;  
 border:1px solid rgba(255,255,255,.25);  
 background:rgba(255,255,255,.08);  
 color:white;  
@@ -523,11 +522,11 @@ cursor:pointer;
 #editPreview{  
 display:none;  
 flex-shrink:0;  
-margin-top:6px;  
-margin-bottom:4px;  
-padding:8px 10px;  
-border-radius:14px;  
-border-left:4px solid #ffd400;  
+margin-top:4px;  
+margin-bottom:2px;  
+padding:4px 8px;  
+border-radius:12px;  
+border-left:3px solid #ffd400;  
 background:rgba(0,0,0,.18);  
 backdrop-filter:blur(10px);  
 }  
@@ -535,22 +534,22 @@ backdrop-filter:blur(10px);
 display:flex;  
 justify-content:space-between;  
 align-items:center;  
-gap:10px;  
-margin-bottom:4px;  
-font-size:11px;  
+gap:8px;  
+margin-bottom:2px;  
+font-size:10px;  
 opacity:.9;  
 }  
 #editPreview .ep-text{  
-font-size:12px;  
+font-size:11px;  
 opacity:.9;  
 white-space:nowrap;  
 overflow:hidden;  
 text-overflow:ellipsis;  
 }  
 #cancelEdit{  
-font-size:12px;  
-padding:2px 8px;  
-border-radius:10px;  
+font-size:11px;  
+padding:1px 6px;  
+border-radius:8px;  
 border:1px solid rgba(255,255,255,.25);  
 background:rgba(255,255,255,.08);  
 color:white;  
@@ -559,17 +558,17 @@ cursor:pointer;
 #cancelEdit:active{transform:scale(.97)}  
 
 /* ============================================================ */
-/* 🎨 INPUT AREA - GOLDEN LUXURY DESIGN ✨                      */
+/* 🎨 INPUT AREA - کوچکتر */
 /* ============================================================ */
 .input-area {
   display: flex;
-  gap: 8px;
-  margin-top: 6px;
+  gap: 6px;
+  margin-top: 4px;
   flex-shrink: 0;
   align-items: center;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(20px);
-  padding: 4px 6px 4px 14px;
+  padding: 3px 5px 3px 12px;
   border-radius: 50px;
   border: 2px solid transparent;
   background-image: 
@@ -577,47 +576,47 @@ cursor:pointer;
     linear-gradient(135deg, #ffd700, #ffb800, #ffd700, #ffe066, #ffd700);
   background-origin: padding-box, border-box;
   background-clip: padding-box, border-box;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.15), inset 0 0 30px rgba(255, 215, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.12), inset 0 0 20px rgba(255, 215, 0, 0.04), 0 4px 20px rgba(0, 0, 0, 0.3);
   transition: all 0.4s ease;
   animation: goldBorderPulse 3s ease-in-out infinite;
-  min-height: 46px;
+  min-height: 38px;
 }
 
 @keyframes goldBorderPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.15), inset 0 0 30px rgba(255, 215, 0, 0.05), 0 8px 32px rgba(0, 0, 0, 0.4); }
-  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), inset 0 0 50px rgba(255, 215, 0, 0.08), 0 8px 40px rgba(0, 0, 0, 0.5); }
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.12), inset 0 0 20px rgba(255, 215, 0, 0.04), 0 4px 20px rgba(0, 0, 0, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.25), inset 0 0 35px rgba(255, 215, 0, 0.06), 0 4px 25px rgba(0, 0, 0, 0.4); }
 }
 
 .input-area:focus-within {
-  box-shadow: 0 0 50px rgba(255, 215, 0, 0.35), inset 0 0 60px rgba(255, 215, 0, 0.1), 0 8px 48px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), inset 0 0 40px rgba(255, 215, 0, 0.08), 0 4px 30px rgba(0, 0, 0, 0.4);
   transform: scale(1.01);
   border-color: transparent;
 }
 
 .input-area input {
   flex: 1;
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 50px;
   border: none;
-  font-size: 14px;
+  font-size: 13px;
   background: transparent;
   color: #fff;
   outline: none;
   font-weight: 400;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   transition: all 0.3s ease;
-  height: 32px;
+  height: 28px;
 }
 
 .input-area input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.35);
   font-weight: 300;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   transition: all 0.3s ease;
 }
 .input-area input:focus::placeholder {
-  color: rgba(255, 215, 0, 0.3);
-  transform: translateX(5px);
+  color: rgba(255, 215, 0, 0.25);
+  transform: translateX(4px);
 }
 .input-area input:focus { color: #fff; }
 
@@ -628,8 +627,8 @@ cursor:pointer;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 50px;
-  height: 50px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -644,12 +643,12 @@ cursor:pointer;
   display: block;
   border-radius: 50px;
   transition: all 0.3s ease;
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.15));
   image-rendering: auto;
 }
 
-.input-area button:hover { transform: scale(1.08); }
-.input-area button:hover img { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 50px rgba(255, 215, 0, 0.2)); }
+.input-area button:hover { transform: scale(1.06); }
+.input-area button:hover img { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.15)); }
 .input-area button:active { transform: scale(0.92); }
 
 body.dark .input-area {
