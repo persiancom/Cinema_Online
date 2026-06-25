@@ -558,7 +558,7 @@ cursor:pointer;
 #cancelEdit:active{transform:scale(.97)}  
 
 /* ============================================================ */
-/* 🎨 INPUT AREA - کوچکتر */
+/* 🎨 INPUT AREA - کادر تایپ کوچک */
 /* ============================================================ */
 .input-area {
   display: flex;
@@ -620,6 +620,7 @@ cursor:pointer;
 }
 .input-area input:focus { color: #fff; }
 
+/* ✅ دکمه ارسال - عکس بزرگ، کادر کوچک */
 .input-area button {
   padding: 0;
   border: none;
@@ -627,13 +628,14 @@ cursor:pointer;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  margin: -5px 0;
 }
 
 .input-area button img {
@@ -647,8 +649,8 @@ cursor:pointer;
   image-rendering: auto;
 }
 
-.input-area button:hover { transform: scale(1.06); }
-.input-area button:hover img { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.15)); }
+.input-area button:hover { transform: scale(1.08); }
+.input-area button:hover img { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 50px rgba(255, 215, 0, 0.2)); }
 .input-area button:active { transform: scale(0.92); }
 
 body.dark .input-area {
@@ -1126,12 +1128,10 @@ function checkLogin(){
   var errorEl = document.getElementById("loginError");
   var debugEl = document.getElementById("loginDebug");
   
-  // نمایش ورودی برای دیباگ
   debugEl.style.display = "block";
   debugEl.innerHTML = "🔍 ورودی: نام کاربری = '" + user + "' | رمز = '" + pass + "'";
   debugEl.style.color = "#ffd700";
   
-  // بررسی کاربران
   var userExists = validUsers[user];
   var passCorrect = userExists && userExists === pass;
   
@@ -1156,7 +1156,6 @@ function closeWelcome(){
   document.getElementById("welcomeOverlay").style.display = "none";
 }
 
-// Enter key for login
 document.addEventListener("keydown", function(e) {
   if(e.key === "Enter" && document.getElementById("login").style.display !== "none") {
     checkLogin();
@@ -1517,7 +1516,6 @@ db.ref("chat").on("child_added",snap=>{
   div.className="message "+(d.user===username?"me":"other");  
   div.id="m_"+key;  
 
-  // ✅ اسم کاربر
   var nameDiv=document.createElement("div");
   nameDiv.className="msg-username";
   nameDiv.innerText=d.user;
