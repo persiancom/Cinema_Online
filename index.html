@@ -760,7 +760,7 @@ body.dark .input-area input { color: #f0f0f0; }
   padding: 10px;
   border-radius: 14px;
   min-width: 140px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -813,7 +813,7 @@ body.dark .input-area input { color: #f0f0f0; }
   padding: 10px;
   border-radius: 14px;
   min-width: 140px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -1405,69 +1405,91 @@ function toggleSettings(){settings.classList.toggle("open")}
 function toggleDark(){document.body.classList.toggle("dark")}  
 
 /*****************************/
-/* 🎬 SOUND EFFECT SYSTEM   */
+/* 🎬 SOUND EFFECT SYSTEM - نسخه ساده و تست شده */
 /*****************************/
 let audioCtx = null;
 let currentSource = null;
-let currentGain = null;
-let isSoundEnabled = false;
+let currentConvolver = null;
+let isSoundActive = false;
 let currentSoundMode = 'off';
-let isSoundInitialized = false;
 
 const IR_FILES = {
   cinema: 'https://raw.githubusercontent.com/persiancom/Cinema_Online/main/Block%20Inside.wav',
   hall: 'https://raw.githubusercontent.com/persiancom/Cinema_Online/main/Bottle%20Hall.wav'
 };
 
+// بارگذاری فایل IR
 async function loadIRFile(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Network response was not ok');
-    const arrayBuffer = await response.arrayBuffer();
-    return arrayBuffer;
-  } catch (error) {
-    console.error('Error loading IR file:', error);
-    throw error;
-  }
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Failed to load IR file');
+  const arrayBuffer = await response.arrayBuffer();
+  return arrayBuffer;
 }
 
+// تنظیم افکت صدا
 async function setSound(mode) {
   const video = document.getElementById('video');
-  if (!video) return;
+  if (!video) {
+    console.error('Video element not found');
+    return;
+  }
   
   // اگر حالت خاموش است
   if (mode === 'off') {
-    if (audioCtx) {
-      try {
-        await audioCtx.close();
-      } catch(e) {}
-      audioCtx = null;
-    }
-    currentSoundMode = 'off';
-    isSoundEnabled = false;
-    currentSource = null;
-    currentGain = null;
-    updateSoundUI('off');
-    return;
-  }
-  
-  // اگر حالت فعلی با حالت جدید یکی است
-  if (currentSoundMode === mode && isSoundEnabled) {
-    return;
-  }
-  
-  try {
-    // ایجاد AudioContext
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    
-    // اگر منبع قبلی وجود داشت، قطع کن
+    // قطع اتصال صدا
     if (currentSource) {
       try {
         currentSource.disconnect();
       } catch(e) {}
       currentSource = null;
+    }
+    if (currentConvolver) {
+      try {
+        currentConvolver.disconnect();
+      } catch(e) {}
+      currentConvolver = null;
+    }
+    if (audioCtx && audioCtx.state !== 'closed') {
+      try {
+        await audioCtx.close();
+      } catch(e) {}
+      audioCtx = null;
+    }
+    isSoundActive = false;
+    currentSoundMode = 'off';
+    updateSoundUI('off');
+    console.log('🔇 Sound off');
+    return;
+  }
+  
+  // اگر حالت فعلی با حالت جدید یکی است
+  if (currentSoundMode === mode && isSoundActive) {
+    return;
+  }
+  
+  try {
+    // ایجاد AudioContext
+    if (!audioCtx || audioCtx.state === 'closed') {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    // رزومه کردن اگر suspended باشد
+    if (audioCtx.state === 'suspended') {
+      await audioCtx.resume();
+    }
+    
+    // قطع اتصال قبلی
+    if (currentSource) {
+      try {
+        currentSource.disconnect();
+      } catch(e) {}
+      currentSource = null;
+    }
+    if (currentConvolver) {
+      try {
+        currentConvolver.disconnect();
+      } catch(e) {}
+      currentConvolver = null;
     }
     
     // ایجاد منبع صدا از ویدیو
@@ -1476,54 +1498,57 @@ async function setSound(mode) {
     
     // ایجاد Convolver برای Reverb
     const convolver = audioCtx.createConvolver();
+    currentConvolver = convolver;
     
     // بارگذاری فایل IR
     const irData = await loadIRFile(IR_FILES[mode]);
     const audioBuffer = await audioCtx.decodeAudioData(irData);
     convolver.buffer = audioBuffer;
     
-    // ایجاد Gain برای کنترل حجم
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = 0.5;
-    currentGain = gainNode;
-    
-    // اتصال: source → convolver → gain → destination
+    // اتصال: source → convolver → destination
     source.connect(convolver);
-    convolver.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+    convolver.connect(audioCtx.destination);
     
-    isSoundEnabled = true;
+    isSoundActive = true;
     currentSoundMode = mode;
     updateSoundUI(mode);
     
-    console.log('✅ افکت صدا فعال شد:', mode);
+    console.log('✅ Sound effect activated:', mode);
     
   } catch(error) {
-    console.error('❌ خطا در فعال‌سازی افکت صدا:', error);
-    setSound('off');
+    console.error('❌ Error activating sound:', error);
+    // در صورت خطا، به حالت خاموش برگرد
+    await setSound('off');
   }
 }
 
+// به‌روزرسانی UI
 function updateSoundUI(mode) {
+  // به‌روزرسانی گزینه‌های منو
   document.querySelectorAll('.sound-option').forEach(el => {
     el.classList.toggle('active', el.dataset.sound === mode);
   });
   
+  // به‌روزرسانی دکمه اصلی
   const soundBtn = document.getElementById('soundBtn');
-  if (mode === 'off') {
-    soundBtn.textContent = '🔊';
-    soundBtn.classList.remove('active');
-  } else {
-    soundBtn.textContent = '🔊';
-    soundBtn.classList.add('active');
+  if (soundBtn) {
+    if (mode === 'off') {
+      soundBtn.textContent = '🔊';
+      soundBtn.classList.remove('active');
+    } else {
+      soundBtn.textContent = '🔊';
+      soundBtn.classList.add('active');
+    }
   }
 }
 
+// توابع منوی صدا
 function toggleSoundPanel() {
   const panel = document.getElementById('soundPanel');
   if (!panel) return;
   
   const isOpen = panel.style.display === 'block';
+  // بستن منوهای دیگر
   closeSizePanel();
   closeVideoPanel();
   
@@ -1531,9 +1556,11 @@ function toggleSoundPanel() {
 }
 
 function closeSoundPanel() {
-  document.getElementById('soundPanel').style.display = 'none';
+  const panel = document.getElementById('soundPanel');
+  if (panel) panel.style.display = 'none';
 }
 
+// اتصال رویدادها
 document.addEventListener('DOMContentLoaded', function() {
   const soundBtn = document.getElementById('soundBtn');
   if (soundBtn) {
@@ -1542,14 +1569,19 @@ document.addEventListener('DOMContentLoaded', function() {
       toggleSoundPanel();
     });
   }
-});
-
-document.addEventListener('click', function() {
-  closeSoundPanel();
-});
-
-document.getElementById('soundPanel')?.addEventListener('click', function(e) {
-  e.stopPropagation();
+  
+  // بستن منو با کلیک بیرون
+  document.addEventListener('click', function() {
+    closeSoundPanel();
+  });
+  
+  // جلوگیری از بسته شدن منو با کلیک داخل آن
+  const panel = document.getElementById('soundPanel');
+  if (panel) {
+    panel.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  }
 });
 
 /*****************************/
@@ -1596,14 +1628,23 @@ function setVideoSize(mode){
   var v=document.getElementById("video");
   if(!v)return;
   
+  // به‌روزرسانی کلاس فعال
   document.querySelectorAll('.size-option').forEach(el => {
     el.classList.toggle('active', el.dataset.size === mode);
   });
   
-  if(mode==="contain"){v.style.objectFit="contain";v.style.width="100%";v.style.height="100%";}
-  else if(mode==="cover"){v.style.objectFit="cover";v.style.width="100%";v.style.height="100%";}
-  else if(mode==="100"){v.style.objectFit="contain";v.style.width="100%";v.style.height="100%";}
-  else if(mode==="stretch"){v.style.objectFit="fill";v.style.width="100%";v.style.height="100%";}
+  // اعمال اندازه
+  v.style.width = "100%";
+  v.style.height = "100%";
+  if(mode==="contain"){
+    v.style.objectFit = "contain";
+  } else if(mode==="cover"){
+    v.style.objectFit = "cover";
+  } else if(mode==="100"){
+    v.style.objectFit = "contain";
+  } else if(mode==="stretch"){
+    v.style.objectFit = "fill";
+  }
   
   closeSizePanel();
 }
