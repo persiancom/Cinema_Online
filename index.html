@@ -1,20 +1,17 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  
-<title>Cinema Online</title>  
-  
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>  
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>  
-  
-<style>  
-*{box-sizing:border-box;margin:0;padding:0}  
-html,body{height:100%}  
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Cinema Online</title>
 
-/* ========================= */
-/* 🎨 THEMES (4 animated)    */
-/* ========================= */
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
 body{
 font-family:Arial;
 color:white;
@@ -29,9 +26,6 @@ position:relative;
 isolation:isolate;
 }
 
-/* ========================= */
-/* 🧩 TELEGRAM-LIKE PATTERN  */
-/* ========================= */
 body::before{
 content:"";
 position:fixed;
@@ -64,7 +58,6 @@ filter:blur(.3px) saturate(.8);
 100%{background-position:0% 50%}
 }
 
-/* Theme 1 (Default: Neon Night) */
 body.theme1{
 background:linear-gradient(-45deg,#1f1c2c,#928dab,#0f2027,#2c5364);
 background-size:420% 420%;
@@ -76,7 +69,6 @@ animation:t1 12s ease infinite;
 100%{background-position:0% 40%}
 }
 
-/* Theme 2 (Aurora) */
 body.theme2{
 background:linear-gradient(-45deg,#061a2d,#00c9ff,#92fe9d,#6a11cb);
 background-size:500% 500%;
@@ -88,7 +80,6 @@ animation:t2 14s ease infinite;
 100%{background-position:0% 50%}
 }
 
-/* Theme 3 (Cyber Sunset) */
 body.theme3{
 background:linear-gradient(-45deg,#12001b,#ff006e,#8338ec,#00f5d4);
 background-size:480% 480%;
@@ -100,7 +91,6 @@ animation:t3 13s ease infinite;
 100%{background-position:10% 50%}
 }
 
-/* Theme 4 (Deep Ocean) */
 body.theme4{
 background:linear-gradient(-45deg,#000428,#004e92,#00c6ff,#0072ff);
 background-size:520% 520%;
@@ -146,7 +136,7 @@ backdrop-filter:blur(12px);
 border:1px solid rgba(255,255,255,.1);  
 border-radius:18px;  
 }  
-  
+
 header{  
 height:90px;  
 flex-shrink:0;  
@@ -157,7 +147,6 @@ padding:0 16px;
 position:relative;  
 }  
 
-/* ✅ لوگوی بسیار بزرگ - وسط چین */
 .logo-wrapper {
   display: flex;
   align-items: center;
@@ -352,7 +341,88 @@ padding:10px;
 display:flex;  
 flex-direction:column;  
 min-height:0;  
+position:relative;
 }  
+
+/* ✅ هدر چت با اسم کاربران آنلاین و پینگ */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(8px);
+  border-radius: 12px 12px 0 0;
+  flex-shrink: 0;
+  min-height: 28px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.online-users {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  align-items: center;
+}
+
+.online-user {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.85;
+}
+
+.online-user .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff66;
+  display: inline-block;
+  animation: blinkOnline 1.5s infinite;
+}
+
+.online-user .ping-badge {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.3);
+  font-weight: 700;
+  min-width: 32px;
+  text-align: center;
+}
+
+.ping-good { color: #00ff88; }
+.ping-medium { color: #ffd700; }
+.ping-bad { color: #ff6b35; }
+.ping-offline { color: #ff4444; }
+
+.chat-header .ping-toggle {
+  font-size: 11px;
+  opacity: 0.6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.05);
+  padding: 2px 8px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+}
+
+.chat-header .ping-toggle:hover {
+  opacity: 1;
+  background: rgba(255,255,255,0.1);
+}
+
+.chat-header .ping-toggle.active {
+  opacity: 1;
+  background: rgba(255,215,0,0.15);
+  color: #ffd700;
+}
 
 .chat-box{  
 flex:1;  
@@ -360,6 +430,7 @@ overflow-y:auto;
 display:flex;  
 flex-direction:column;  
 gap:4px;  
+padding:4px 0;
 }  
 
 .message{  
@@ -557,9 +628,6 @@ cursor:pointer;
 }  
 #cancelEdit:active{transform:scale(.97)}  
 
-/* ============================================================ */
-/* 🎨 INPUT AREA - کادر تایپ کوچک */
-/* ============================================================ */
 .input-area {
   display: flex;
   gap: 6px;
@@ -620,7 +688,6 @@ cursor:pointer;
 }
 .input-area input:focus { color: #fff; }
 
-/* ✅ دکمه ارسال - عکس بزرگ، کادر کوچک */
 .input-area button {
   padding: 0;
   border: none;
@@ -658,8 +725,6 @@ body.dark .input-area {
   background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), linear-gradient(135deg, #ffd700, #ffb800, #ffd700, #ffe066, #ffd700);
 }
 body.dark .input-area input { color: #f0f0f0; }
-
-/* ============================================================ */
 
 #settings{  
 position:fixed;  
@@ -804,7 +869,6 @@ border-left:1px solid rgba(255,215,0,0.15);
   }
 }
 
-/* ✅ LOGIN - دو ورودی با دیباگ */
 #login{  
 position:fixed;  
 inset:0;  
@@ -1006,6 +1070,11 @@ body::before {
   <button onclick="setTheme('theme2')">تم ۲</button>
   <button onclick="setTheme('theme3')">تم ۳</button>
   <button onclick="setTheme('theme4')">تم ۴</button>
+  
+  <hr>  
+  
+  <!-- ✅ دکمه نمایش پینگ در تنظیمات -->
+  <button onclick="togglePing()" id="pingToggleBtn">📶 نمایش پینگ: <span id="pingStatus">خاموش</span></button>
 
   <hr>  
 
@@ -1061,6 +1130,16 @@ style="display:none;position:absolute;right:60px;bottom:60px;z-index:12;padding:
   </div>  
 
   <div class="chat-container glass">  
+    <!-- ✅ هدر چت با اسم کاربران آنلاین و پینگ -->
+    <div class="chat-header" id="chatHeader">
+      <div class="online-users" id="onlineUsers">
+        <span style="opacity:0.5;font-size:10px;">📡 آنلاین‌ها:</span>
+      </div>
+      <button class="ping-toggle" id="pingToggleHeader" onclick="togglePing()">
+        📶 <span id="pingStatusHeader">خاموش</span>
+      </button>
+    </div>
+    
     <div class="chat-box" id="chat"></div>  
 
     <div id="typingIndicator"></div>
@@ -1118,6 +1197,9 @@ const validUsers = {
   "الهه": "CTF_11",
   "حمیدرضا": "CTF_22"
 };
+
+// ✅ وضعیت نمایش پینگ
+var showPing = false;
 
 /*****************************/
 /* ✅ LOGIN SYSTEM با دیباگ  */
@@ -1187,6 +1269,111 @@ db.ref("ui/theme").on("value",snap=>{
 
 function toggleSettings(){settings.classList.toggle("open")}  
 function toggleDark(){document.body.classList.toggle("dark")}  
+
+/*****************************/
+/* 📶 PING SYSTEM           */
+/*****************************/
+function togglePing(){
+  showPing = !showPing;
+  // به‌روزرسانی دکمه‌ها
+  var statusText = showPing ? "روشن" : "خاموش";
+  document.getElementById("pingStatus").innerText = statusText;
+  document.getElementById("pingStatusHeader").innerText = statusText;
+  
+  var btn = document.getElementById("pingToggleHeader");
+  if(showPing){
+    btn.classList.add("active");
+  } else {
+    btn.classList.remove("active");
+  }
+  
+  // ذخیره در localStorage
+  try{localStorage.setItem("showPing", showPing);}catch(e){}
+}
+
+// بازیابی وضعیت پینگ
+(function(){
+  try{
+    var saved = localStorage.getItem("showPing");
+    if(saved === "true"){
+      showPing = true;
+      document.getElementById("pingStatus").innerText = "روشن";
+      document.getElementById("pingStatusHeader").innerText = "روشن";
+      document.getElementById("pingToggleHeader").classList.add("active");
+    }
+  }catch(e){}
+})();
+
+// محاسبه پینگ واقعی
+function measurePing(){
+  return new Promise((resolve) => {
+    const start = performance.now();
+    fetch('https://www.google.com/favicon.ico', { 
+      mode: 'no-cors',
+      cache: 'no-store'
+    })
+    .then(() => {
+      const ping = Math.round(performance.now() - start);
+      resolve(ping);
+    })
+    .catch(() => {
+      resolve(null); // خطا در اتصال
+    });
+  });
+}
+
+// به‌روزرسانی پینگ کاربران
+async function updateUserPings(){
+  if(!showPing) return;
+  
+  const users = document.querySelectorAll('.online-user');
+  for(const el of users){
+    const userId = el.dataset.userId;
+    if(userId && userId !== myId){
+      const ping = await measurePing();
+      const badge = el.querySelector('.ping-badge');
+      if(badge){
+        if(ping !== null){
+          badge.textContent = ping + 'ms';
+          badge.className = 'ping-badge';
+          if(ping < 60) badge.classList.add('ping-good');
+          else if(ping < 150) badge.classList.add('ping-medium');
+          else badge.classList.add('ping-bad');
+        } else {
+          badge.textContent = '⛔';
+          badge.className = 'ping-badge ping-offline';
+        }
+      }
+    }
+  }
+}
+
+// پینگ خودمان (برای نمایش در هدر)
+async function updateMyPing(){
+  if(!showPing) return;
+  const ping = await measurePing();
+  const myEl = document.querySelector('.online-user[data-user-id="' + myId + '"] .ping-badge');
+  if(myEl){
+    if(ping !== null){
+      myEl.textContent = ping + 'ms';
+      myEl.className = 'ping-badge';
+      if(ping < 60) myEl.classList.add('ping-good');
+      else if(ping < 150) myEl.classList.add('ping-medium');
+      else myEl.classList.add('ping-bad');
+    } else {
+      myEl.textContent = '⛔';
+      myEl.className = 'ping-badge ping-offline';
+    }
+  }
+}
+
+// شروع پینگ周期
+setInterval(() => {
+  if(showPing){
+    updateMyPing();
+    updateUserPings();
+  }
+}, 4000);
 
 /*****************************/
 /* 🎉 VIDEO REACTION PANEL ✅ */
@@ -1362,10 +1549,38 @@ connectedRef.on("value", function(snap) {
     con.onDisconnect().remove();
   }
 });
+
+// ✅ نمایش لیست کاربران آنلاین با پینگ
 db.ref("online").on("value", snap => {
   var count = 0;
-  snap.forEach(child => { if(child.val()) count++; });
+  var usersHtml = '<span style="opacity:0.5;font-size:10px;">📡 آنلاین‌ها:</span>';
+  
+  snap.forEach(child => {
+    var data = child.val();
+    if(data && data.user){
+      count++;
+      var userId = child.key;
+      var isMe = (userId === myId);
+      var userName = data.user;
+      
+      usersHtml += `<span class="online-user" data-user-id="${userId}">
+        <span class="dot"></span>
+        ${userName}${isMe ? ' (شما)' : ''}
+        <span class="ping-badge">--</span>
+      </span>`;
+    }
+  });
+  
+  document.getElementById("onlineUsers").innerHTML = usersHtml;
   document.getElementById("online").innerText = "Online: " + count;
+  
+  // اگر پینگ فعال باشد، بلافاصله به‌روزرسانی کن
+  if(showPing){
+    setTimeout(() => {
+      updateMyPing();
+      updateUserPings();
+    }, 500);
+  }
 });
 
 /*****************************/
