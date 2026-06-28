@@ -1612,7 +1612,7 @@ function closeAllPickers(){
 document.addEventListener("click",()=>{closeAllPickers();});  
 
 /*****************************/
-/* ✅ SEND (اصلاح شده برای ریپلای) */
+/* ✅ SEND - فقط ریپلای اصلاح شده */
 /*****************************/
 function send(){  
   if(!msg.value || !username) return;  
@@ -1626,14 +1626,12 @@ function send(){
     return;  
   }  
 
-  // ذخیره ریپلای با متن کامل برای نمایش یکسان برای همه
-  var replyText = replyTo || null;
-  
+  // فقط اینجا اصلاح شده - ریپلای با متن کامل ذخیره میشه
   db.ref("chat").push({  
     text:msg.value,  
     user:username,  
     time:Date.now(),  
-    reply:replyText,  
+    reply:replyTo,  
     seen:false,  
     edited:false,  
     reactions:{}  
@@ -1693,8 +1691,7 @@ db.ref("chat").on("child_added",snap=>{
   if(d.reply){  
     var rep=document.createElement("div");  
     rep.className="reply-box";  
-    // نمایش ریپلای با نام کاربری که پیام رو ارسال کرده (برای شفافیت)
-    rep.innerText="↪ " + d.reply;  
+    rep.innerText=d.reply;  
     div.appendChild(rep);  
   }  
 
@@ -1733,7 +1730,7 @@ db.ref("chat").on("child_added",snap=>{
         deleteMessage(key);
       }
     };
-    
+
     meta.appendChild(editBtn);  
     meta.appendChild(delBtn);
   }  
