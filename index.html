@@ -1612,7 +1612,7 @@ function closeAllPickers(){
 document.addEventListener("click",()=>{closeAllPickers();});  
 
 /*****************************/
-/* ✅ SEND (device removed)  */
+/* ✅ SEND (اصلاح شده برای ریپلای) */
 /*****************************/
 function send(){  
   if(!msg.value || !username) return;  
@@ -1626,11 +1626,14 @@ function send(){
     return;  
   }  
 
+  // ذخیره ریپلای با متن کامل برای نمایش یکسان برای همه
+  var replyText = replyTo || null;
+  
   db.ref("chat").push({  
     text:msg.value,  
     user:username,  
     time:Date.now(),  
-    reply:replyTo,  
+    reply:replyText,  
     seen:false,  
     edited:false,  
     reactions:{}  
@@ -1690,7 +1693,8 @@ db.ref("chat").on("child_added",snap=>{
   if(d.reply){  
     var rep=document.createElement("div");  
     rep.className="reply-box";  
-    rep.innerText=d.reply;  
+    // نمایش ریپلای با نام کاربری که پیام رو ارسال کرده (برای شفافیت)
+    rep.innerText="↪ " + d.reply;  
     div.appendChild(rep);  
   }  
 
@@ -1729,16 +1733,15 @@ db.ref("chat").on("child_added",snap=>{
         deleteMessage(key);
       }
     };
+    
+    meta.appendChild(editBtn);  
+    meta.appendChild(delBtn);
   }  
 
   meta.innerHTML=new Date(d.time).toLocaleTimeString().slice(0,5)  
   +(d.edited?" <span style='opacity:.75'>(edited)</span>":"")  
   +(d.user===username?" <span id='s"+key+"'>✔</span>":"");  
 
-  if(d.user===username){  
-    meta.appendChild(editBtn);  
-    meta.appendChild(delBtn);
-  }  
   meta.appendChild(reactBtn);  
   div.appendChild(meta);  
 
