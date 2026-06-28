@@ -1142,8 +1142,6 @@ style="display:none;position:absolute;right:60px;bottom:60px;z-index:12;padding:
     </div>  
   </div>  
 </div>
-<script>  
-</script>
 
 <script>  
 // ===================== FIREBASE CONFIGURATION =====================
@@ -1409,8 +1407,7 @@ function curtainOpenAndGo(){
   setTimeout(()=>{ c.classList.add("open"); },60);  
   setTimeout(()=>{ c.classList.add("hide"); },1750);  
 }  
-</script>
-<script>
+
 /* ===================== */  
 /* ✅ VIDEO SYNC ADDED ✅ */  
 /* ===================== */  
@@ -1703,20 +1700,7 @@ db.ref("chat").on("child_added",snap=>{
   var meta=document.createElement("div");  
   meta.className="meta";  
 
-  // ری اکشن فقط برای پیام دیگران (نه پیام خودم)
-  if(d.user !== username){  
-    var reactBtn=document.createElement("span");  
-    reactBtn.className="react-btn";  
-    reactBtn.innerText="😊";  
-    reactBtn.onclick=function(ev){  
-      ev.stopPropagation();  
-      closeAllPickers();  
-      showReactions(key,div);  
-    };  
-    meta.appendChild(reactBtn);  
-  }
-
-  // ادیت و حذف فقط برای پیام خودم
+  // ادیت و حذف فقط برای پیام خودم (همیشه نمایش داده میشه)
   if(d.user===username){  
     var editBtn=document.createElement("span");  
     editBtn.className="edit-btn";  
@@ -1739,11 +1723,27 @@ db.ref("chat").on("child_added",snap=>{
 
     meta.appendChild(editBtn);  
     meta.appendChild(delBtn);
+  }
+
+  // ری اکشن برای پیام دیگران (نه پیام خودم)
+  if(d.user !== username){  
+    var reactBtn=document.createElement("span");  
+    reactBtn.className="react-btn";  
+    reactBtn.innerText="😊";  
+    reactBtn.onclick=function(ev){  
+      ev.stopPropagation();  
+      closeAllPickers();  
+      showReactions(key,div);  
+    };  
+    meta.appendChild(reactBtn);  
   }  
 
-  meta.innerHTML = new Date(d.time).toLocaleTimeString().slice(0,5)  
-  +(d.edited?" <span style='opacity:.75'>(edited)</span>":"")  
-  +(d.user===username?" <span id='s"+key+"'>✔</span>":"");  
+  // تایم و وضعیت دیده شدن
+  var timeStr = new Date(d.time).toLocaleTimeString().slice(0,5);
+  var editedStr = d.edited ? " <span style='opacity:.75'>(edited)</span>" : "";
+  var seenStr = d.user===username ? " <span id='s"+key+"'>✔</span>" : "";
+  
+  meta.innerHTML = timeStr + editedStr + seenStr + meta.innerHTML;
 
   div.appendChild(meta);  
 
@@ -1809,24 +1809,8 @@ db.ref("chat").on("child_changed",snap=>{
 
     var meta=m.querySelector(".meta");  
     if(meta){  
-      var timeStr=new Date(d.time).toLocaleTimeString().slice(0,5);  
-      var editedStr=d.edited?" <span style='opacity:.75'>(edited)</span>":"";  
-      
-      // پاک کردن محتوای متا (به جز تایم و ادیت و وضعیت دیده شدن)
-      meta.innerHTML = timeStr + editedStr + (d.user===username ? " <span id='s"+snap.key+"'>" + (d.seen ? "✔✔" : "✔") + "</span>" : "");
-      
-      // ری اکشن فقط برای پیام دیگران
-      if(d.user !== username){  
-        var reactBtn=document.createElement("span");  
-        reactBtn.className="react-btn";  
-        reactBtn.innerText="😊";  
-        reactBtn.onclick=function(ev){  
-          ev.stopPropagation();  
-          closeAllPickers();  
-          showReactions(snap.key,m);  
-        };  
-        meta.appendChild(reactBtn);  
-      }
+      // پاک کردن محتوای قبلی متا
+      meta.innerHTML = "";
       
       // ادیت و حذف فقط برای پیام خودم
       if(d.user===username){  
@@ -1852,6 +1836,25 @@ db.ref("chat").on("child_changed",snap=>{
         meta.appendChild(editBtn);  
         meta.appendChild(delBtn);
       }
+      
+      // ری اکشن برای پیام دیگران
+      if(d.user !== username){  
+        var reactBtn=document.createElement("span");  
+        reactBtn.className="react-btn";  
+        reactBtn.innerText="😊";  
+        reactBtn.onclick=function(ev){  
+          ev.stopPropagation();  
+          closeAllPickers();  
+          showReactions(snap.key,m);  
+        };  
+        meta.appendChild(reactBtn);  
+      }
+      
+      var timeStr=new Date(d.time).toLocaleTimeString().slice(0,5);  
+      var editedStr=d.edited?" <span style='opacity:.75'>(edited)</span>":"";  
+      var seenStr = d.user===username ? " <span id='s"+snap.key+"'>" + (d.seen ? "✔✔" : "✔") + "</span>" : "";
+      
+      meta.innerHTML = timeStr + editedStr + seenStr + meta.innerHTML;
     }  
   }  
 
@@ -1876,18 +1879,11 @@ function clearChat(){
   cancelEdit();  
 }  
 
-</script>  
-
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
     const typingEl = document.getElementById("typingIndicator");
     if (typingEl) typingEl.style.display = "none";
 });
-</script>
 
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
     const video = document.querySelector("video");
     const videoWrapper = document.querySelector(".video-wrapper");
@@ -1907,9 +1903,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-</script>
 
-<script>
 /* ===== VIDEO SIZE CONTROL ===== */
 var __sizeBtn = document.getElementById("videoSizeBtn");
 var __sizePanel = document.getElementById("videoSizePanel");
